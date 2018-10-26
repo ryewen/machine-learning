@@ -48,7 +48,7 @@ class NaiveBayes:
                 pr *= 1 / (np.sqrt(2 * math.pi) * self.con_pr_dict[key][i][1]) * math.exp(0 - np.square(con_feats[i] - self.con_pr_dict[key][i][0]) / (2 * np.square(self.con_pr_dict[key][i][1])))
             prs.append(pr)
         print(prs)
-        label = []
+        result = []
         for i in range(0, len(prs)):
             ifMax = True
             for j in range(0, len(prs)):
@@ -56,8 +56,8 @@ class NaiveBayes:
                     ifMax = False
                     break
             if ifMax:
-                label.append(list(self.class_len_dict.keys())[i])
-        return label
+                result.append(list(self.class_len_dict.keys())[i])
+        return result
 
 
     def read(self, xiguatxt):
