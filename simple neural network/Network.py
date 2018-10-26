@@ -6,6 +6,7 @@ class Network:
 
     learning_rate = 0
 
+
     def __init__(self, lens, learning_rate, w, threshold):
         self.layers = []
         self.learning_rate = learning_rate
@@ -24,6 +25,7 @@ class Network:
                     next_node.befores.append(before_node)
                     next_node.before_ws.append(w)
 
+
     def set_input_layer(self, values):
         if len(values) != len(self.layers[0]):
             return 0
@@ -31,19 +33,22 @@ class Network:
             self.layers[0][i].forward_value = values[i]
         return 1
 
+
     def compute_error(self, label):
         outputs = self.layers[len(self.layers) - 1]
         if len(label) != len(outputs):
             return 0
         for i in range(0, len(label)):
             outputs[i].back_value = outputs[i].forward_value - label[i]
-            print(outputs[i].back_value)
+            #print(outputs[i].back_value)
+
 
     def forward(self):
         for i in range(1, len(self.layers)):
             nodes = self.layers[i]
             for node in nodes:
                 node.forward()
+
 
     def back(self, label):
         for i in range(0, len(self.layers) - 1):
@@ -70,6 +75,7 @@ class Network:
                 node.threshold -= self.learning_rate * node.delta_threshold
         return 1
 
+
     def train(self, data, label):
         if self.set_input_layer(data) == 0:
             print('length match error')
@@ -78,3 +84,22 @@ class Network:
 
         if self.back(label) == 0:
             print('length match error')
+
+
+    def prediction(self, data):
+        if self.set_input_layer(data) == 0:
+            print('length match error')
+
+        self.forward()
+
+        nodes = self.layers[len(self.layers) - 1]
+        values = [node.forward_value for node in nodes]
+        print(values)
+        for i in range(0, len(values)):
+            ifMax = True
+            for j in range(0, len(values)):
+                if values[i] < values[j]:
+                    ifMax = False
+                    break
+            if ifMax:
+                return [k == i for k in range(0, len(values))]
