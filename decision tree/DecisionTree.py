@@ -1,4 +1,5 @@
 import math
+import copy
 from Node import Node
 
 class DecisionTree:
@@ -9,7 +10,7 @@ class DecisionTree:
 
     root = Node()
 
-    def __init__(self, txtpath):
+    def __init__(self, txtpath, begin, end):
         self.sample_dicts = []
         self.feat_len = 0
         self.root = Node()
@@ -21,13 +22,13 @@ class DecisionTree:
         for line in txt:
             strs = line.split('\n')[0].split(',')
             if i == 0:
-                feat_names = strs[1: 9]
+                feat_names = strs[begin: end]
                 self.feat_len = len(feat_names)
                 i += 1
             else:
                 sample_dict = {}
                 for j in range(0, len(feat_names)):
-                    sample_dict[feat_names[j]] = strs[j + 1]
+                    sample_dict[feat_names[j]] = strs[begin + j]
                 if strs[len(strs) - 1] == '是':
                     sample_dict['class'] = '好瓜'
                 else:
@@ -83,6 +84,7 @@ class DecisionTree:
         value_samples_dict = {}
         if not '<=' in best_feat:
             for sample_dict in sample_dicts:
+                sample_dict = copy.copy(sample_dict)
                 if not sample_dict[best_feat] in value_samples_dict.keys():
                     value_samples_dict[sample_dict[best_feat]] = [sample_dict]
                 else:
@@ -94,6 +96,7 @@ class DecisionTree:
             kind = best_feat.split('<=')[0]            
             index = float(best_feat.split('<=')[1])
             for sample_dict in sample_dicts:
+                sample_dict = copy.copy(sample_dict)
                 if float(sample_dict[kind]) <= index:
                     value_samples_dict['less'].append(sample_dict)
                 else:

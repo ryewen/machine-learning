@@ -1,7 +1,10 @@
+import sys
+sys.path.append('../decision tree')
+
 from DecisionTree import DecisionTree
 
 if __name__ == '__main__':
-    tree = DecisionTree('xigua.txt', 1, 9)
+    tree = DecisionTree('xigua.txt', 7, 9)
     print(tree.sample_dicts)
     tree.decision()
 
